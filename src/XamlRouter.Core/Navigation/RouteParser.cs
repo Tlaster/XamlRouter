@@ -1,70 +1,10 @@
-﻿using System.Collections.Immutable;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
+using XamlRouter.Core.Navigation.Route;
 
-namespace XamlRouter.Core;
+namespace XamlRouter.Core.Navigation;
 
-internal class RouteMatch
-{
-    public bool Matches { get; set; }
-    public Route? Route { get; set; }
-    public List<string> Vars { get; set; } = new();
-    public List<string> Keys { get; set; } = new();
-    public Dictionary<string, string> PathMap { get; set; } = new();
-
-    public void Key()
-    {
-        var size = Math.Min(Keys.Count, Vars.Count);
-        for (var i = 0; i < size; i++)
-        {
-            PathMap[Keys[i]] = Vars[i];
-        }
-
-        for (var i = 0; i < size; i++)
-        {
-            Vars.RemoveAt(0);
-        }
-    }
-
-    public void Truncate(int size)
-    {
-        var sizeInt = size;
-        while (sizeInt < Vars.Count)
-        {
-            Vars.RemoveAt(sizeInt++);
-        }
-    }
-
-    public void Value(string value)
-    {
-        Vars.Add(value);
-    }
-
-    public void Pop()
-    {
-        if (Vars.Count > 0)
-        {
-            Vars.RemoveAt(Vars.Count - 1);
-        }
-    }
-
-    public RouteMatch Found(Route route)
-    {
-        Route = route;
-        Matches = true;
-        return this;
-    }
-}
-
-public record RouteMatchResult(Route Route, Dictionary<string, string> PathMap);
-
-public interface Route
-{
-    string Route { get; }
-    List<string> PathKeys { get; }
-}
-
-public class RouteParser
+internal class RouteParser
 {
     private const int NtStatic = 0; // /home
     private const int NtRegexp = 1; // /{id:[0-9]+}
@@ -75,9 +15,9 @@ public class RouteParser
     private const string BASE_CATCH_ALL = "/?*";
 
     private readonly Node _root = new();
-    private readonly Dictionary<string, Route> _staticPaths = new();
+    private readonly Dictionary<string, IRoute> _staticPaths = new();
 
-    public void Insert(string pattern, Route route)
+    public void Insert(string pattern, IRoute route)
     {
         var patternStr = pattern;
         var baseCatchAll = BaseCatchAll(patternStr);
@@ -108,7 +48,7 @@ public class RouteParser
         return i > 0 ? pattern[..i] : "";
     }
 
-    public void Insert(Route route)
+    public void Insert(IRoute route)
     {
         Insert(route.Route, route);
     }
@@ -308,7 +248,7 @@ public class RouteParser
         int EndIndex = 0);
 
     private record Node(int Type = 0, string Prefix = "", char Label = '\0', char Tail = '\0', Regex? Rex = null,
-        string? ParamsKey = null, Route? Route = null) : IComparable<Node>
+        string? ParamsKey = null, IRoute? Route = null) : IComparable<Node>
     {
         public char Label { get; private set; } = Label;
         public string Prefix { get; private set; } = Prefix;
@@ -317,7 +257,7 @@ public class RouteParser
         public char Tail { get; private set; } = Tail;
         public string? ParamsKey { get; private set; } = ParamsKey;
 
-        public Route? Route { get; private set; } = Route;
+        public IRoute? Route { get; private set; } = Route;
 
         // subroutes on the leaf node
         // Routes subroutes;
@@ -337,7 +277,7 @@ public class RouteParser
             return Label - other.Label;
         }
 
-        public Node InsertRoute(string pattern, Route route)
+        public Node InsertRoute(string pattern, IRoute route)
         {
             var n = this;
             Node parent;
@@ -582,13 +522,13 @@ public class RouteParser
             return null;
         }
 
-        public void ApplyRoute(Route? route)
+        public void ApplyRoute(IRoute? route)
         {
             var n = this;
             n.Route = route;
         }
 
-        public Route? FindRoute(RouteMatch rctx, string path)
+        public IRoute? FindRoute(RouteMatch rctx, string path)
         {
             for (var ntyp = 0; ntyp < NodeSize; ntyp++)
             {

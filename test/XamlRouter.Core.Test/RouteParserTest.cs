@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using XamlRouter.Core.Navigation.Route;
 
 namespace XamlRouter.Core.Test;
 
@@ -239,13 +240,13 @@ public class RouteParserTest
         Assert.AreEqual(id, route.Id);
     }
     
-    private static Route Route(string path, string id)
+    private static IRoute Route(string path, string id)
     {
         return new TestRoute(path, id, new List<string>());
     }
 }
 
-record TestRoute(string Route, string Id, List<string> PathKeys) : Route;
+record TestRoute(string Route, string Id, List<string> PathKeys) : IRoute;
 
 internal static class LetExtension
 {
