@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B9EC2878-24AE-4BFE-BA67-BB98F3006E34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlRouter.Core", "src\XamlRouter.Core\XamlRouter.Core.csproj", "{60773A54-6AE7-42D3-BF0F-C20D1BAACEA3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{BD69540B-B715-49F3-BF93-CB238264BF6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamlRouter.Core.Test", "test\XamlRouter.Core.Test\XamlRouter.Core.Test.csproj", "{CF5F012F-B115-4BD9-8BAB-7EDBBC0526BE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{60773A54-6AE7-42D3-BF0F-C20D1BAACEA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60773A54-6AE7-42D3-BF0F-C20D1BAACEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60773A54-6AE7-42D3-BF0F-C20D1BAACEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60773A54-6AE7-42D3-BF0F-C20D1BAACEA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF5F012F-B115-4BD9-8BAB-7EDBBC0526BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF5F012F-B115-4BD9-8BAB-7EDBBC0526BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF5F012F-B115-4BD9-8BAB-7EDBBC0526BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF5F012F-B115-4BD9-8BAB-7EDBBC0526BE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{60773A54-6AE7-42D3-BF0F-C20D1BAACEA3} = {B9EC2878-24AE-4BFE-BA67-BB98F3006E34}
+		{CF5F012F-B115-4BD9-8BAB-7EDBBC0526BE} = {BD69540B-B715-49F3-BF93-CB238264BF6B}
+	EndGlobalSection
+EndGlobal
